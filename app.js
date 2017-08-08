@@ -5,11 +5,14 @@ const mongoose = require('mongoose');
 const Todos = require('./models/todo');
 const bodyParser = require('body-parser');
 mongoose.Promise = require('bluebird');
+mongoose.connect('mongodb://localhost:27017/toDoApplication');
 const application = express();
 
-app.use('/static', express.static('static'));
+application.use('/static', express.static('static'));
 
-app.get('/', function (req, res) {
+application.use(bodyParser.urlencoded());
+
+application.get('/', function (req, res) {
     res.sendFile(__dirname + "/static/index.html");
 })
 
@@ -68,6 +71,6 @@ application.put('/api/todos/:id', async (request, response) => {
     return response.json(updated);
 });
 
-app.listen(3000, function () {
+application.listen(3000, function () {
     console.log('Express running on http://localhost:3000/.')
 });
